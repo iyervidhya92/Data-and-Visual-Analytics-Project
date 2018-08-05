@@ -1,0 +1,115 @@
+-- initial commands
+.headers on
+.separator ','
+.mode csv
+
+
+-- (a) Import data
+-- [insert sql statement(s) below]
+CREATE TABLE uber_data (
+		sourceid ,
+    	dstid ,	
+ 		hod,
+		mean_travel_time ,	
+		standard_deviation_travel_time ,
+		geometric_mean_travel_time	, 
+		geometric_standard_deviation_travel_time);
+		
+		
+.import 'Actual.csv' uber_data
+.output 'test0.csv'
+ SELECT * from uber_data WHERE hod = '0' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test1.csv'
+SELECT * from uber_data WHERE hod = '1' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test2.csv'
+SELECT * from uber_data WHERE hod = '2' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test3.csv'
+SELECT * from uber_data WHERE hod = '3' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test4.csv'
+SELECT * from uber_data WHERE hod = '4' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test5.csv'
+SELECT * from uber_data WHERE hod = '5' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test6.csv'
+SELECT * from uber_data WHERE hod = '6' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test7.csv'
+SELECT * from uber_data WHERE hod = '7' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test8.csv'
+SELECT * from uber_data WHERE hod = '8' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test9.csv'
+SELECT * from uber_data WHERE hod = '9' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test10.csv'
+SELECT * from uber_data WHERE hod = '10' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test11.csv'
+SELECT * from uber_data WHERE hod = '11' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test12.csv'
+SELECT * from uber_data WHERE hod = '12' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test13.csv'
+SELECT * from uber_data WHERE hod = '13' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test14.csv'
+SELECT * from uber_data WHERE hod = '14' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test15.csv'
+SELECT * from uber_data WHERE hod = '15' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test16.csv'
+SELECT * from uber_data WHERE hod = '16' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test17.csv'
+SELECT * from uber_data WHERE hod = '17' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test18.csv'
+SELECT * from uber_data WHERE hod = '18' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test19.csv'
+SELECT * from uber_data WHERE hod = '19' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test20.csv'
+SELECT * from uber_data WHERE hod = '20' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test21.csv'
+SELECT * from uber_data WHERE hod = '21' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test22.csv'
+SELECT * from uber_data WHERE hod = '22' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+
+.output 'test23.csv'
+SELECT * from uber_data WHERE hod = '23' ORDER BY standard_deviation_travel_time/mean_travel_time DESC LIMIT 500 ;
+.output stdout
+

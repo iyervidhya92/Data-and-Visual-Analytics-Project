@@ -1,0 +1,200 @@
+{% extends 'def/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+  <br><br><br><br>
+  <style type="text/css">
+    html, body, #map-canvas {
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0px
+  }
+  </style>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<script>   
+  var c20 = d3.scale.category20();
+  function mapLocation() {
+    // var directionsDisplay1;
+    // var directionsDisplay2;
+    var directionsService = new google.maps.DirectionsService();
+    var map;
+
+    function initialize() {
+        // directionsDisplay1 = new google.maps.DirectionsRenderer();
+        // directionsDisplay2 = new google.maps.DirectionsRenderer();
+        var sfo = new google.maps.LatLng(37.334818, -121.884886);
+        var mapOptions = {
+            zoom: 7,
+            center: sfo
+        };
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        // directionsDisplay1.setMap(map);
+        // directionsDisplay2.setMap(map);
+
+        google.maps.event.addDomListener(document.getElementById('routebtn'), 'click', calcRoute);
+        google.maps.event.addDomListener(document.getElementById('selectBus'), 'change', calcRoute);
+        google.maps.event.addDomListener(document.getElementById('selectTime'), 'change', calcRoute);
+    }
+
+    function calcRoute() {
+      var e = document.getElementById("selectBus");
+      var bus = e.options[e.selectedIndex].text;
+
+      var f = document.getElementById("selectTime");
+      var time = f.options[f.selectedIndex].text;
+      time = $.trim(time.slice(0,2))
+
+      var dataAPI = "http://localhost:5000/data/"+bus+"/"+time;
+        $.getJSON( dataAPI, { format: "json" })
+            .done(function(jsonData) {
+
+        var busNo = Object.keys(jsonData).length;
+        // directionsDisplays =[];
+        // for (var j = 0; j < busNo; j++) {
+          // console.log(busNo);
+          // console.log(jsonData[j])
+          // var directionsDisplay = new google.maps.DirectionsRenderer({
+                                                    // polylineOptions: {strokeColor: "red"}});
+          // directionsDisplays.push(directionsDisplay);
+          // console.log(directionsDisplay);
+          // var start =  new google.maps.LatLng (37.857024517503255, -122.03390420007021);
+          //var end = new google.maps.LatLng(38.334818, -181.884886);
+          // var locs = [
+          //   new google.maps.LatLng(37.95363608711444, -122.01114499894531),
+          //   new google.maps.LatLng(37.98953879551202, -121.777248124408),
+          //   new google.maps.LatLng(37.98988792913292, -121.79431434349534), 
+          //   new google.maps.LatLng( 37.69869010881121, -122.06500807389575),
+          //   new google.maps.LatLng( 37.68711761098035, -122.12727101822473)
+          // ]
+          nextDirections(0);
+          function nextDirections(j) {
+            var directionsDisplay = new google.maps.DirectionsRenderer({                                      suppressMarkers: true,
+                                                    polylineOptions: {strokeColor: c20(j)}});
+
+            var stopNo = Object.keys(jsonData[j]).length;
+            var start =  new google.maps.LatLng (jsonData[j][0][0][1], jsonData[j][0][0][0]);
+            
+            var end =  new google.maps.LatLng (jsonData[j][stopNo-1][0][1], jsonData[j][stopNo-1][0][0]);
+
+            var waypts = [];
+            for (var i = 1; i < stopNo-1; i++) {
+                waypts.push({
+                  location: new google.maps.LatLng(jsonData[j][i][0][1], jsonData[j][i][0][0]),
+                  stopover: true
+                });
+            }
+
+            for (var i = 0; i < stopNo; i++) {
+              var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(jsonData[j][i][0][1], jsonData[j][i][0][0]),
+                title:jsonData[j][i][1]
+              });
+
+              // To add the marker to the map, call setMap();
+              marker.setMap(map);
+            }
+
+            var bounds = new google.maps.LatLngBounds();
+            bounds.extend(start);
+            bounds.extend(end);
+            map.fitBounds(bounds);
+            var request = {
+                origin: start,
+                destination: end,
+                 waypoints: waypts,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    // if (j==0){
+                      directionsDisplay.setDirections(response);
+                      directionsDisplay.setMap(map);
+                    // } else {
+                    //   directionsDisplay2.setDirections(response);
+                    //   directionsDisplay2.setMap(map);
+                    // }
+                      if (j<(busNo-1)) {
+                        nextDirections(j+1);
+                      }
+                    
+                } else {
+                    alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
+                }
+            });
+          }
+      });
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+  // }
+}
+// mapLocation();
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhBLfamR61QMJyemNPMyI2CY1Jzy2OJVo&callback=mapLocation"></script>
+
+<div>
+  <h2 class="mbr-section-title pb-3 align-center mbr-fonts-style display-2">
+            Dashboard
+        </h2>
+</div>
+<form>
+  <fieldset>
+    <label>
+      Buses :
+    </label>
+    <select id="selectBus" name="selectBus">
+      <!-- <option value="None">Number of Buses</option> -->
+    </select>
+
+    <label>
+      Time of Day :
+    </label>
+    <select id="selectTime" name="selectTime">
+      <!-- <option value="None">Time of Day</option> -->
+    </select>
+    <input type="button" id="routebtn" value="route" />
+  </fieldset>
+</form>
+
+<div id="map"></div>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_3AM5bNrPd9uNihhkA5jHnUaZRZP2ElM&callback=mapLocation"></script> -->
+
+
+<div id="map-canvas"></div>
+
+<script>
+
+var clusters = [], Buses = [], timeofday = [];
+
+var timemenu = document.getElementById("selectTime")
+for(var i=0;i<=24;i++){
+      var hr   = i > 12 && i <= 24 ? i - 12 : i;
+      var amPm = i >= 12 && i < 24 ? 'PM' : 'AM';
+      timeofday.push(hr + ' ' + amPm); }
+
+for(var i=1;i<=24;i++){
+  var option = document.createElement("OPTION"),
+      txt    = document.createTextNode(timeofday[i]);
+    option.appendChild(txt);
+    timemenu.insertBefore(option,timemenu.lastChild);
+  }
+
+var busmenu = document.getElementById("selectBus");
+for(var i=1;i<=10;i++){
+      Buses.push(i); }
+
+for(var i=0;i<10;i++){
+  var option = document.createElement("OPTION"),
+      txt    = document.createTextNode(Buses[i]);
+    option.appendChild(txt);
+    busmenu.insertBefore(option,busmenu.lastChild);
+  }
+
+ </script>
+
+{% endblock %}

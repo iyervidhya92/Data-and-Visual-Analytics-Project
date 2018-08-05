@@ -1,0 +1,28 @@
+{% extends 'def/base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+
+<section class="engine"><a href="https://mobirise.ws/c">best website maker</a></section><section class="cid-qNHJNxkvua mbr-fullscreen mbr-parallax-background" id="header2-f">
+    <div class="container align-center">
+        <div class="row justify-content-md-center">
+            <div class="mbr-white col-md-4">
+                  <font color="black">
+                    {% if error %}
+                         <p> {{ error }} </p>
+                    {% endif %}
+                   
+                    <form method="post" class="form">
+                    <h3 class="form-heading">Login <a href="{{ url_for('home') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+                    {{ form.name(class_ = 'form-control first-input', placeholder = form.name.label.text, required = true, autofocus = true) }}
+                    {{ form.password(class_ = 'form-control last-input', placeholder = form.password.label.text, required = true) }}
+                    <br><br>
+                    <input type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">
+                    </form>
+                  </font>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
